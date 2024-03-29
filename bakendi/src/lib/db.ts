@@ -1,6 +1,6 @@
 import pg from 'pg';
 import { User, Game, Champion} from '../types.js';
-import { mapUser, mapUsers } from './mapper.js';
+import { mapGame, mapGames, mapUser, mapUsers } from './mapper.js';
 
 
 let savedPool: pg.Pool | undefined;
@@ -107,7 +107,7 @@ export async function getGames(): Promise<Array<Game> | null> {
     return null;
   }
 
-  return result.rows;
+  return mapGames(result.rows);
   
 }
 
@@ -118,7 +118,7 @@ export async function getGameById(id: number): Promise<Game | null> {
     return null;
   }
 
-  return result.rows[0];
+  return mapGame(result.rows[0]);
 }
 
 export async function CreateNewGame(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date): Promise<Game | null> {
@@ -127,7 +127,7 @@ export async function CreateNewGame(kills: number, assists: number, deaths: numb
     return null;
   }
 
-  return result.rows[0];
+  return mapGame(result.rows[0]);
 }
 
 export async function updateGameById(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date, id:number): Promise<Game | null> {
@@ -136,7 +136,7 @@ export async function updateGameById(kills: number, assists: number, deaths: num
     return null;
   }
 
-  return result.rows[0];
+  return mapGame(result.rows[0]);
 }
 
 export async function deleteGameFromId(id: number): Promise<Game | null> {
@@ -145,5 +145,5 @@ export async function deleteGameFromId(id: number): Promise<Game | null> {
     return null;
   }
 
-  return result.rows[0];
+  return mapGame(result.rows[0]);
 }

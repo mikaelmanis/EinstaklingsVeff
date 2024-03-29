@@ -27,5 +27,33 @@ export function mapUsers(potentialUsers: unknown): Array<User> {
   return mapped.filter((i): i is User => Boolean(i));
 }
 
+export function mapGame(potentialGame: unknown): Game | null {
+  const game = potentialGame as Game;
+  if (!game || !game.id || !game.kill || !game.assists || !game.deaths || !game.champion || !game.user || !game.date) {
+    return null;
+  }
+  const mapped: Game = {
+    id: game.id,
+    kill: game.kill,
+    assists: game.assists,
+    deaths: game.deaths,
+    champion: game.champion,
+    user: game.user,
+    date: game.date,
+  };
 
+  return mapped;
+}
+
+export function mapGames(potentialGames: unknown): Array<Game> {
+  const games = potentialGames as Array<unknown> | null;
+
+  if (!games || !Array.isArray(games)) {
+    return [];
+  }
+
+  const mapped = games.map(mapGame);
+
+  return mapped.filter((i): i is Game => Boolean(i));
+}
 
