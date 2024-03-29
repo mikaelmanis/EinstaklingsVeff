@@ -92,7 +92,7 @@ export async function deleteUserFromId(id: number): Promise<User | null> {
 }
 
 export async function getChampions(): Promise<Array<Champion> | null> {
-  const result = await query('SELECT * FROM Champion');
+  const result = await query('SELECT * FROM champion');
   if (!result) {
     return null;
   }
@@ -101,3 +101,49 @@ export async function getChampions(): Promise<Array<Champion> | null> {
   
 }
 
+export async function getGames(): Promise<Array<Game> | null> {
+  const result = await query('SELECT * FROM games');
+  if (!result) {
+    return null;
+  }
+
+  return result.rows;
+  
+}
+
+export async function getGameById(id: number): Promise<Game | null> {
+  const result = await query('SELECT * FROM games WHERE id = $1', [id]);
+
+  if (!result || result.rows.length !== 1) {
+    return null;
+  }
+
+  return result.rows[0];
+}
+
+export async function CreateNewGame(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date): Promise<Game | null> {
+  const result = await query('INSERT INTO games (kills, assists, deaths, champion, user, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [kills, assists, deaths, champion, user, date]);
+  if (!result) {
+    return null;
+  }
+
+  return result.rows[0];
+}
+
+export async function updateGameById(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date, id:number): Promise<Game | null> {
+  const result = await query('UPDATE games SET kills = $1, assists = $2, deaths = $3, champion = $4, user = $5, date = $6 WHERE id = $7 RETURNING *', [kills, assists, deaths, champion, user, date, id]);
+  if (!result) {
+    return null;
+  }
+
+  return result.rows[0];
+}
+
+export async function deleteGameFromId(id: number): Promise<Game | null> {
+  const result = await query('DELETE FROM games WHERE id = $1 RETURNING *', [id]);
+  if (!result) {
+    return null;
+  }
+
+  return result.rows[0];
+}
