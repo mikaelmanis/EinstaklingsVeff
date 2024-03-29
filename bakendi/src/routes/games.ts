@@ -22,8 +22,8 @@ export async function getGame(req: Request, res: Response, next: NextFunction): 
   }
 
 export async function createGame(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    const { kills, assists, deaths, champion, user, date  } = req.body;
-    const game = CreateNewGame(kills, assists, deaths, champion, user, date);
+    const { kills, assists, deaths, champion, user, date, wol  } = req.body;
+    const game = CreateNewGame(kills, assists, deaths, champion, user, date, wol);
     if (!game) {
         return next(new Error('Game not created'));
     }
@@ -32,8 +32,8 @@ export async function createGame(req: Request, res: Response, next: NextFunction
 
 export async function updateGame(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const id = parseInt(req.params.id);
-    const { kills, assists, deaths, champion, user, date  } = req.body;
-    const game = updateGameById(kills, assists, deaths, champion, user, date, id);
+    const { kills, assists, deaths, champion, user, date, wol  } = req.body;
+    const game = updateGameById(kills, assists, deaths, champion, user, date, wol, id);
     if (!game) {
         return next(new Error('Game not updated'));
     }

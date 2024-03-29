@@ -40,6 +40,7 @@ export function mapGame(potentialGame: unknown): Game | null {
     champion: game.champion,
     user: game.user,
     date: game.date,
+    wol: game.wol,
   };
 
   return mapped;

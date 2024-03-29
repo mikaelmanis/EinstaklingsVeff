@@ -13,6 +13,7 @@ export type Game = {
   champion: string;
   user: number;
   date: Date;
+  wol: boolean;
 }
 
 export type Champion = {

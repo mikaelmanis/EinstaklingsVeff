@@ -121,8 +121,8 @@ export async function getGameById(id: number): Promise<Game | null> {
   return mapGame(result.rows[0]);
 }
 
-export async function CreateNewGame(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date): Promise<Game | null> {
-  const result = await query('INSERT INTO games (kills, assists, deaths, champion, user, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [kills, assists, deaths, champion, user, date]);
+export async function CreateNewGame(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date, wol:boolean): Promise<Game | null> {
+  const result = await query('INSERT INTO games (kills, assists, deaths, champion, user, date, wol) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [kills, assists, deaths, champion, user, date, wol]);
   if (!result) {
     return null;
   }
@@ -130,8 +130,8 @@ export async function CreateNewGame(kills: number, assists: number, deaths: numb
   return mapGame(result.rows[0]);
 }
 
-export async function updateGameById(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date, id:number): Promise<Game | null> {
-  const result = await query('UPDATE games SET kills = $1, assists = $2, deaths = $3, champion = $4, user = $5, date = $6 WHERE id = $7 RETURNING *', [kills, assists, deaths, champion, user, date, id]);
+export async function updateGameById(kills: number, assists: number, deaths: number, champion: string, user: number, date: Date, wol:boolean, id:number): Promise<Game | null> {
+  const result = await query('UPDATE games SET kills = $1, assists = $2, deaths = $3, champion = $4, user = $5, date = $6, wol = $7 WHERE id = $8 RETURNING *', [kills, assists, deaths, champion, user, date, wol, id]);
   if (!result) {
     return null;
   }
