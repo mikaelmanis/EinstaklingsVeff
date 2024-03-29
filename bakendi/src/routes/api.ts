@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { ListChampions } from './champions.js';
+import { ListUsers, createUser, deleteUser, getUser } from './users.js';
 
 
 export const router = express.Router();
@@ -11,7 +13,7 @@ export async function index(req: Request, res: Response) {
     },
     {
       user: '/users/:id',
-      methods: ['GET', 'PATCH', 'DELETE'],
+      methods: ['GET', 'DELETE'],
     },
     {
       games: '/games',
@@ -21,6 +23,10 @@ export async function index(req: Request, res: Response) {
       game: '/games/:id',
       methods: ['GET', 'PATCH', 'DELETE'],
     },
+    {
+      champions: '/champions',
+      methods: ['GET'],
+    }
   ]);
 }
 
@@ -28,3 +34,9 @@ export async function error() {
   throw new Error('error');
 }
 
+router.get('/', index);
+router.get('/champions', ListChampions);
+router.get('/users', ListUsers);
+router.post('/users', createUser);
+router.get('/users/:id', getUser);
+router.delete('/users/:id', deleteUser);

@@ -10,7 +10,8 @@ export type Game = {
   kill: number;
   assists: number;
   deaths: number;
-  champion: Champion;
+  champion: string;
+  user: number;
   date: Date;
 }
 

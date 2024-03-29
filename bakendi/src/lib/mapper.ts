@@ -14,6 +14,18 @@ export function mapUser(potentialUser: unknown): User | null {
 
   return mapped;
 }
+export function mapUsers(potentialUsers: unknown): Array<User> {
+  const users = potentialUsers as Array<unknown> | null;
+
+  if (!users || !Array.isArray(users)) {
+    return [];
+  }
+
+  const mapped = users.map(mapUser);
+
+
+  return mapped.filter((i): i is User => Boolean(i));
+}
 
 
 

@@ -1,6 +1,6 @@
 import pg from 'pg';
 import { User, Game, Champion} from '../types.js';
-import { mapUser } from './mapper.js';
+import { mapUser, mapUsers } from './mapper.js';
 
 
 let savedPool: pg.Pool | undefined;
@@ -53,23 +53,51 @@ export async function query(
   }
 }
 
-export async function getUsers(): Promise<User | null> {
+export async function getUsers(): Promise<Array<User> | null> {
   const result = await query('SELECT * FROM users');
   if (!result) {
     return null;
   }
 
-  return mapUser(result.rows);
+  return mapUsers(result.rows);
   
 }
 
 export async function getUserById(id: number): Promise<User | null> {
-  const result = await query('SELECT * FROM users WHERE id = $1');
+  const result = await query('SELECT * FROM users WHERE id = $1', [id]);
 
   if (!result || result.rows.length !== 1) {
     return null;
   }
-  
+
   return mapUser(result.rows[0]);
+}
+
+export async function CreateNewUser(name: string, slug: string, description: string): Promise<User | null> {
+  const result = await query('INSERT INTO users (name, slug, description) VALUES ($1, $2, $3) RETURNING *', [name, slug, description]);
+  if (!result) {
+    return null;
+  }
+
+  return mapUser(result.rows[0]);
+}
+
+export async function deleteUserFromId(id: number): Promise<User | null> {
+  const result = await query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+  if (!result) {
+    return null;
+  }
+
+  return mapUser(result.rows[0]);
+}
+
+export async function getChampions(): Promise<Array<Champion> | null> {
+  const result = await query('SELECT * FROM Champion');
+  if (!result) {
+    return null;
+  }
+
+  return result.rows;
+  
 }
 
